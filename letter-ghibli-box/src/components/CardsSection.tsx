@@ -14,8 +14,6 @@ import {
 import { Label } from './ui/label'
 import { useState, useMemo } from 'react'
 import { useAppSelector } from '@/store'
-import { Skeleton } from './ui/skeleton'
-import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
 
 export default function CardsSection() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -77,46 +75,6 @@ export default function CardsSection() {
       }
     })
   }, [getAllFilms, searchTerm, includeSynopsis, sortOption, movieRatings])
-
-  const renderSkeletons = () => {
-    return Array(8)
-      .fill(0)
-      .map((_, index) => (
-        <div key={`skeleton-${index}`}>
-          <Card className='w-full rounded-2xl'>
-            <Skeleton className='h-[300px] w-full rounded-t-2xl' />
-            <CardHeader>
-              <Skeleton className='mb-2 h-6 w-3/4' />
-              <Skeleton className='mb-2 h-4 w-1/2' />
-              <div className='mb-2 flex justify-between'>
-                <div className='flex gap-2'>
-                  <Skeleton className='h-5 w-5 rounded-full' />
-                  <Skeleton className='h-4 w-10' />
-                </div>
-                <div className='flex items-center'>
-                  <div className='flex gap-1'>
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <Skeleton key={i} className='h-4 w-4 rounded-full' />
-                    ))}
-                  </div>
-                  <Skeleton className='ml-2 h-4 w-16' />
-                </div>
-              </div>
-              <Skeleton className='h-16 w-full' />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className='mb-2 h-4 w-3/4' />
-              <Skeleton className='h-4 w-3/4' />
-            </CardContent>
-            <CardFooter className='flex flex-col gap-2'>
-              {[1, 2, 3].map((i) => (
-                <Skeleton key={i} className='h-9 w-full' />
-              ))}
-            </CardFooter>
-          </Card>
-        </div>
-      ))
-  }
 
   return (
     <div className='flex w-full flex-col bg-slate-900 sm:px-8 md:px-12 lg:px-24  py-8'>
@@ -222,14 +180,16 @@ export default function CardsSection() {
         </Select>
       </div>
       <div
-        className={`m-auto  mt-6 grid gap-4 sm:gap-6 md:gap-6 lg:gap-8 grid-cols-1 ${
-          isLoading || filteredAndSortedFilms.length > 1
-            ? 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4'
+        className={`m-auto mt-6 grid gap-4 sm:gap-6 md:gap-6 lg:gap-8 grid-cols-1 ${
+          filteredAndSortedFilms.length > 1
+            ? 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
             : ''
         }`}
       >
         {isLoading ? (
-          renderSkeletons()
+          <div className="col-span-full flex justify-center items-center min-h-[calc(100vh-200px)]">
+            <Loader2 className="h-8 w-8 animate-spin text-white" />
+          </div>
         ) : filteredAndSortedFilms.length === 0 ? (
           <div className='col-span-full text-center'>
             <p className='text-xl'>Nenhum filme encontrado</p>

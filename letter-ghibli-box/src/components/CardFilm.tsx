@@ -37,7 +37,6 @@ export default function CardFilm({ film }: FilmProps) {
   const [hoverRating, setHoverRating] = useState(0)
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
-
   const movieData = useAppSelector((state) => state.movies.movieData[film.id])
 
   const isWatched = movieData?.watched || false
