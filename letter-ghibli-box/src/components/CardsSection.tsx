@@ -12,12 +12,14 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Label } from './ui/label'
-import { useDispatch } from 'react-redux'
-import { setDataMovies } from '@/store/slices/movieSlice'
-import { useEffect } from 'react'
+
 
 export default function CardsSection() {
-  const dispatch = useDispatch()
+
+ 
+
+
+
   const { getAllFilms, isLoading } = useGetAllMoviesQuery(undefined, {
     selectFromResult: ({ data, isLoading }) => ({
       getAllFilms: data || [],
@@ -25,15 +27,7 @@ export default function CardsSection() {
     }),
   })
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (getAllFilms && getAllFilms.length > 0) {
-        dispatch(setDataMovies(getAllFilms))
-      }
-    }, 1000)
-
-    return () => clearTimeout(timer)
-  }, [getAllFilms, dispatch])
+ 
 
   return (
     <div className='flex w-full flex-col p-8'>
@@ -63,13 +57,14 @@ export default function CardsSection() {
       <div
         className={`m-auto grid gap-8 ${getAllFilms.length === 1 ? 'grid-cols-1' : 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'}`}
       >
-        {isLoading ? <p>Carregando...</p>:
-        getAllFilms.length === 0 ? (
+        {isLoading ? (
+          <p>Carregando...</p>
+        ) : getAllFilms.length === 0 ? (
           <p>Nenhum filme encontrado</p>
         ) : (
           getAllFilms.map((film: MoviesResponse) => (
             <div key={film.id}>
-              <CardFilm film={film} />
+              <CardFilm film = {film}/>
             </div>
           ))
         )}

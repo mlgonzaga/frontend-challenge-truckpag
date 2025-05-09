@@ -17,4 +17,6 @@ export interface MoviesResponse {
   vehicles: string[]
   url: string
   watched?: boolean
+  favorite?: boolean
+  note?: string
 }

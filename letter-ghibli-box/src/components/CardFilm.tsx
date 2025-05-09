@@ -8,35 +8,78 @@ import {
 } from '@/components/ui/card'
 import { Button } from './ui/button'
 import { Eye, Heart, Star, StickyNote } from 'lucide-react'
-import type { MoviesResponse } from '@/interfaces/movies'
 import { addMinutes, format } from 'date-fns'
+import { useDispatch } from 'react-redux'
+import { updateMovie } from '@/store/slices/movieSlice'
+import { toast } from 'sonner'
+import type { MoviesResponse } from '@/interfaces/movies'
+import { useAppSelector } from '@/store'
 
 interface FilmProps {
   film: MoviesResponse
 }
 
 export default function CardFilm({ film }: FilmProps) {
+  const dispatch = useDispatch()
+
+  // Buscar os dados do filme do estado global
+  const movieData = useAppSelector((state) => state.movies.movieData[film.id])
+
+  const isWatched = movieData?.watched || false
+  const isFavorite = movieData?.favorite || false
+
   const buttonVariants = [
     {
       id: 1,
-      icon: <Eye />,
-      text: 'Mark Watched',
+      icon: <Eye className={isWatched ? 'fill-gray' : ''} />,
+      text: isWatched ? 'Watched' : 'Mark Watched',
+      variant: isWatched ? 'default' : 'outline',
     },
     {
       id: 2,
-      icon: <Heart />,
-      text: 'Add favorite',
+      icon: <Heart className={isFavorite ? 'fill-red-500 text-red-500' : ''} />,
+      text: isFavorite ? 'Favorite' : 'Add favorite',
+      variant: isFavorite ? 'default' : 'outline',
     },
     {
       id: 3,
       icon: <StickyNote />,
       text: 'Add Notes',
+      variant: 'outline',
     },
   ]
 
-  const addNewMovieProp = (id: number, film: MoviesResponse) => {
-    if (id === 1) {
-      film.watched = !film.watched
+  const addNewMovieProp = (id: number) => {
+    switch (id) {
+      case 1: {
+        dispatch(
+          updateMovie({
+            id: film.id,
+            watched: !isWatched,
+          })
+        )
+        !isWatched
+          ? toast.success('Movie marked as watched')
+          : toast.success('Movie removed from watched')
+        break
+      }
+      case 2: {
+        dispatch(
+          updateMovie({
+            id: film.id,
+            favorite: !isFavorite,
+          })
+        )
+        !isFavorite
+          ? toast.success('Movie added to favorites')
+          : toast.success('Movie removed from favorites')
+        break
+      }
+      case 3: {
+        // Adicionar funcionalidade de notas
+        toast.info('Note feature coming soon')
+        break
+      }
     }
   }
 
@@ -78,10 +121,20 @@ export default function CardFilm({ film }: FilmProps) {
           <Button
             key={index}
             className='my-auto flex w-full cursor-pointer gap-2 border-2'
-            variant={'ghost'}
-            onClick={() => addNewMovieProp(variant.id, film)}
+            variant={
+              variant.variant as
+                | 'default'
+                | 'destructive'
+                | 'outline'
+                | 'secondary'
+                | 'ghost'
+                | 'link'
+                | null
+                | undefined
+            }
+            onClick={() => addNewMovieProp(variant.id)}
           >
-            {variant.icon} {!film.watched ? variant.text : "Watcherd"}
+            {variant.icon} {variant.text}
           </Button>
         ))}
       </CardFooter>
