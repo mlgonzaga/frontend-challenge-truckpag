@@ -206,25 +206,25 @@ export default function CardsSection() {
         <div className="flex gap-2">
           <p className='text-white'>Filters:</p>
           <Button
-            variant={showWatched ? "default" : "outline"}
+            variant={showWatched ? "destructive" : "outline"}
             onClick={() => setShowWatched(!showWatched)}
-            className="text-black cursor-pointer"
+            className={`cursor-pointer ${showWatched ? "text-black" : " border-white hover:text-white hover:bg-white/10"}`}
           >
             <Eye className="mr-2 h-4 w-4" />
             Watched
           </Button>
           <Button
-            variant={showFavorites ? "default" : "outline"}
+            variant={showFavorites ? "destructive" : "outline"}
             onClick={() => setShowFavorites(!showFavorites)}
-            className="text-black cursor-pointer"
+            className={`cursor-pointer ${showFavorites ? "text-black cursor-pointer" : " border-white hover:text-white hover:bg-white/10"}`}
           >
             <Heart className="mr-2 h-4 w-4" />
             Favorites
           </Button>
           <Button
-            variant={showWithNotes ? "default" : "outline"}
+            variant={showWithNotes ? "destructive" : "outline"}
             onClick={() => setShowWithNotes(!showWithNotes)}
-            className="text-black cursor-pointer"
+            className={`cursor-pointer ${showWithNotes ? "text-black cursor-pointer" : " border-white hover:text-white hover:bg-white/10"}`}
           >
             <StickyNote className="mr-2 h-4 w-4" />
             With Notes
@@ -233,7 +233,7 @@ export default function CardsSection() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="text-black">
+            <Button variant="outline" className={ratingFilter === 'all' ? "cursor-pointer border-white hover:text-white hover:bg-white/10" : "text-black"}>
               {ratingFilter === 'all' ? 'Any Rating' :
                 ratingFilter === 'unrated' ? 'Unrated' :
                   `${ratingFilter} Stars`}
@@ -301,6 +301,21 @@ export default function CardsSection() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {(showWatched || showFavorites || showWithNotes || ratingFilter !== 'all') && (
+          <Button
+            variant="outline"
+            onClick={() => {
+              setShowWatched(false)
+              setShowFavorites(false)
+              setShowWithNotes(false)
+              setRatingFilter('all')
+            }}
+            className="text-black hover:text-white hover:bg-white/10 cursor-pointer"
+          >
+            Clear Filters
+          </Button>
+        )}
       </div>
 
       <div
@@ -314,8 +329,8 @@ export default function CardsSection() {
             <Loader2 className="h-8 w-8 animate-spin text-white" />
           </div>
         ) : filteredAndSortedFilms.length === 0 ? (
-          <div className='col-span-full text-center'>
-            <p className='text-xl'>Nenhum filme encontrado</p>
+          <div className='col-span-full text-center min-h-[calc(100vh-450px)] overflow-none'>
+            <p className='text-xl text-white'>Nenhum filme encontrado</p>
             <p className='text-muted-foreground'>
               Tente alterar os filtros de busca
             </p>
