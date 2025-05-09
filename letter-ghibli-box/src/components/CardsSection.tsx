@@ -83,7 +83,7 @@ export default function CardsSection() {
       .fill(0)
       .map((_, index) => (
         <div key={`skeleton-${index}`}>
-          <Card className='w-80 rounded-2xl'>
+          <Card className='w-full rounded-2xl'>
             <Skeleton className='h-[300px] w-full rounded-t-2xl' />
             <CardHeader>
               <Skeleton className='mb-2 h-6 w-3/4' />
@@ -222,9 +222,9 @@ export default function CardsSection() {
         </Select>
       </div>
       <div
-        className={`m-auto mt-6 grid gap-8 ${
+        className={`m-auto mt-6 grid gap-8 grid-cols-1 ${
           isLoading || filteredAndSortedFilms.length > 1
-            ? 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+            ? 'sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'
             : 'grid-cols-1'
         }`}
       >
