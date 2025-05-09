@@ -17,7 +17,6 @@ import { useAppSelector } from '@/store'
 import { Skeleton } from './ui/skeleton'
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
 
-
 export default function CardsSection() {
   const [searchTerm, setSearchTerm] = useState('')
   const [includeSynopsis, setIncludeSynopsis] = useState(false)
@@ -40,13 +39,13 @@ export default function CardsSection() {
       const titleMatch = film.title
         .toLowerCase()
         .includes(searchTerm.toLowerCase())
-      
+
       if (!includeSynopsis) return titleMatch
-      
+
       const synopsisMatch = film.description
         .toLowerCase()
         .includes(searchTerm.toLowerCase())
-      
+
       return titleMatch || synopsisMatch
     })
 
@@ -87,9 +86,9 @@ export default function CardsSection() {
           <Card className='w-80 rounded-2xl'>
             <Skeleton className='h-[300px] w-full rounded-t-2xl' />
             <CardHeader>
-              <Skeleton className='h-6 w-3/4 mb-2' />
-              <Skeleton className='h-4 w-1/2 mb-2' />
-              <div className='flex justify-between mb-2'>
+              <Skeleton className='mb-2 h-6 w-3/4' />
+              <Skeleton className='mb-2 h-4 w-1/2' />
+              <div className='mb-2 flex justify-between'>
                 <div className='flex gap-2'>
                   <Skeleton className='h-5 w-5 rounded-full' />
                   <Skeleton className='h-4 w-10' />
@@ -100,13 +99,13 @@ export default function CardsSection() {
                       <Skeleton key={i} className='h-4 w-4 rounded-full' />
                     ))}
                   </div>
-                  <Skeleton className='h-4 w-16 ml-2' />
+                  <Skeleton className='ml-2 h-4 w-16' />
                 </div>
               </div>
               <Skeleton className='h-16 w-full' />
             </CardHeader>
             <CardContent>
-              <Skeleton className='h-4 w-3/4 mb-2' />
+              <Skeleton className='mb-2 h-4 w-3/4' />
               <Skeleton className='h-4 w-3/4' />
             </CardContent>
             <CardFooter className='flex flex-col gap-2'>
@@ -120,66 +119,128 @@ export default function CardsSection() {
   }
 
   return (
-    <div className='flex w-full flex-col py-8 px-56 bg-slate-900'>
-      <div className="relative">
-        <Input 
-          placeholder='Search movies...' 
-          className='border-2 pl-10 bg-white'
+    <div className='flex w-full flex-col bg-slate-900 sm:px-8 md:px-12 lg:px-24 xl:px-56 py-8  mx-auto'>
+      <div className='relative'>
+        <Input
+          placeholder='Search movies...'
+          className='border-2 bg-white pl-10'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           disabled={isLoading}
         />
         {isLoading ? (
-          <Loader2 className='text-muted-foreground animate-spin absolute left-2 top-1/2 -translate-y-1/2' size={20} />
+          <Loader2
+            className='text-muted-foreground absolute top-1/2 left-2 -translate-y-1/2 animate-spin'
+            size={20}
+          />
         ) : (
-          <Search className='text-muted-foreground absolute left-2 top-1/2 -translate-y-1/2' size={20} />
+          <Search
+            className='text-muted-foreground absolute top-1/2 left-2 -translate-y-1/2'
+            size={20}
+          />
         )}
       </div>
-      <div className='flex justify-between mt-4'>
+      <div className='mt-4 flex justify-between'>
         <div className='flex items-center gap-3'>
-          <Checkbox 
-            id="includeSynopsis" 
+          <Checkbox
+            id='includeSynopsis'
             checked={includeSynopsis}
             onCheckedChange={(checked) => setIncludeSynopsis(checked === true)}
             disabled={isLoading}
           />
-          <Label htmlFor="includeSynopsis" className={isLoading ? 'opacity-70' : ' text-white font-normal'}>
-          Include synopsis in search
+          <Label
+            htmlFor='includeSynopsis'
+            className={isLoading ? 'opacity-70' : 'font-normal text-white'}
+          >
+            Include synopsis in search
           </Label>
         </div>
-        <Select value={sortOption} onValueChange={setSortOption} disabled={isLoading}>
-  <SelectTrigger className="w-[240px] bg-white text-shadow-zinc-400">
-    <SelectValue placeholder="Default" />
-  </SelectTrigger>
-  <SelectContent className="bg-slate-400 text-white">
-    <SelectItem className="hover:bg-zinc-700 text-white" value="default">Padrão</SelectItem>
-    <SelectItem className="hover:bg-zinc-700 text-white" value="title-asc">Título (A-Z)</SelectItem>
-    <SelectItem className="hover:bg-zinc-700 text-white" value="title-desc">Título (Z-A)</SelectItem>
-    <SelectItem className="hover:bg-zinc-700 text-white" value="duration-shortest">Duração (Mais curta)</SelectItem>
-    <SelectItem className="hover:bg-zinc-700 text-white" value="duration-longest">Duração (Mais longa)</SelectItem>
-    <SelectItem className="hover:bg-zinc-700 text-white" value="rating-highest">Sua Avaliação (Maior)</SelectItem>
-    <SelectItem className="hover:bg-zinc-700 text-white" value="rating-lowest">Sua Avaliação (Menor)</SelectItem>
-    <SelectItem className="hover:bg-zinc-700 text-white" value="score-highest">Pontuação (Maior)</SelectItem>
-    <SelectItem className="hover:bg-zinc-700 text-white" value="score-lowest">Pontuação (Menor)</SelectItem>
-  </SelectContent>
-</Select>
+        <Select
+          value={sortOption}
+          onValueChange={setSortOption}
+          disabled={isLoading}
+        >
+          <SelectTrigger className='w-[240px] bg-white text-shadow-zinc-400'>
+            <SelectValue placeholder='Default' />
+          </SelectTrigger>
+          <SelectContent className='bg-slate-400 text-white'>
+            <SelectItem
+              className='text-white hover:bg-zinc-700'
+              value='default'
+            >
+              Padrão
+            </SelectItem>
+            <SelectItem
+              className='text-white hover:bg-zinc-700'
+              value='title-asc'
+            >
+              Título (A-Z)
+            </SelectItem>
+            <SelectItem
+              className='text-white hover:bg-zinc-700'
+              value='title-desc'
+            >
+              Título (Z-A)
+            </SelectItem>
+            <SelectItem
+              className='text-white hover:bg-zinc-700'
+              value='duration-shortest'
+            >
+              Duração (Mais curta)
+            </SelectItem>
+            <SelectItem
+              className='text-white hover:bg-zinc-700'
+              value='duration-longest'
+            >
+              Duração (Mais longa)
+            </SelectItem>
+            <SelectItem
+              className='text-white hover:bg-zinc-700'
+              value='rating-highest'
+            >
+              Sua Avaliação (Maior)
+            </SelectItem>
+            <SelectItem
+              className='text-white hover:bg-zinc-700'
+              value='rating-lowest'
+            >
+              Sua Avaliação (Menor)
+            </SelectItem>
+            <SelectItem
+              className='text-white hover:bg-zinc-700'
+              value='score-highest'
+            >
+              Pontuação (Maior)
+            </SelectItem>
+            <SelectItem
+              className='text-white hover:bg-zinc-700'
+              value='score-lowest'
+            >
+              Pontuação (Menor)
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div
         className={`m-auto mt-6 grid gap-8 ${
-          (isLoading || filteredAndSortedFilms.length > 1) ? 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' : 'grid-cols-1'
+          isLoading || filteredAndSortedFilms.length > 1
+            ? 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+            : 'grid-cols-1'
         }`}
       >
         {isLoading ? (
           renderSkeletons()
         ) : filteredAndSortedFilms.length === 0 ? (
-          <div className="col-span-full text-center">
-            <p className="text-xl">Nenhum filme encontrado</p>
-            <p className="text-muted-foreground">Tente alterar os filtros de busca</p>
+          <div className='col-span-full text-center'>
+            <p className='text-xl'>Nenhum filme encontrado</p>
+            <p className='text-muted-foreground'>
+              Tente alterar os filtros de busca
+            </p>
           </div>
         ) : (
           filteredAndSortedFilms.map((film: MoviesResponse) => (
             <div key={film.id}>
-              <CardFilm film={film}/>
+              <CardFilm film={film} />
             </div>
           ))
         )}
