@@ -45,9 +45,4 @@ export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>()
-export const useAppSelect: TypedUseSelectorHook<RootState> = useSelector
-
-export function useAppSelector<T>(selector: (state: RootState) => T) {
-  const memoizedSelector = createSelector((state: RootState) => state, selector)
-  return useAppSelect(memoizedSelector)
-}
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector

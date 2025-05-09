@@ -8,11 +8,12 @@ interface MovieSliceProp {
   loading: boolean
   movieData: Record<
     string,
-    MoviesResponse & { watched: boolean; favorite: boolean; note: string }
+    MoviesResponse & { watched: boolean; favorite: boolean; note: string; rating: number }
   >
   watched: boolean
   favorite: boolean
   note: string
+  rating: number
 }
 
 // Carregar dados do localStorage ou usar objeto vazio
@@ -26,6 +27,7 @@ const initialState: MovieSliceProp = {
   watched: false,
   favorite: false,
   note: '',
+  rating: 0,
 }
 
 const movieSlice = createSlice({
@@ -39,9 +41,10 @@ const movieSlice = createSlice({
         watched?: boolean
         favorite?: boolean
         note?: string
+        rating?: number
       }>
     ) => {
-      const { id, watched, favorite, note } = action.payload
+      const { id, watched, favorite, note, rating } = action.payload
 
       if (state.movieData[id]) {
         const movieData = state.movieData[id]
@@ -52,6 +55,7 @@ const movieSlice = createSlice({
           watched: watched !== undefined ? watched : movieData.watched,
           favorite: favorite !== undefined ? favorite : movieData.favorite,
           note: note !== undefined ? note : movieData.note,
+          rating: rating !== undefined ? rating : movieData.rating,
         }
 
         // Salvar no localStorage
@@ -72,6 +76,7 @@ const movieSlice = createSlice({
             watched: state.movieData[movie.id]?.watched || false,
             favorite: state.movieData[movie.id]?.favorite || false,
             note: state.movieData[movie.id]?.note || '',
+            rating: state.movieData[movie.id]?.rating || 0,
           }
         })
 

@@ -14,6 +14,17 @@ import { updateMovie } from '@/store/slices/movieSlice'
 import { toast } from 'sonner'
 import type { MoviesResponse } from '@/interfaces/movies'
 import { useAppSelector } from '@/store'
+import { useState } from 'react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 interface FilmProps {
   film: MoviesResponse
@@ -21,12 +32,17 @@ interface FilmProps {
 
 export default function CardFilm({ film }: FilmProps) {
   const dispatch = useDispatch()
+  const [noteText, setNoteText] = useState('')
+  const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false)
+  const [hoverRating, setHoverRating] = useState(0)
 
   // Buscar os dados do filme do estado global
   const movieData = useAppSelector((state) => state.movies.movieData[film.id])
 
   const isWatched = movieData?.watched || false
   const isFavorite = movieData?.favorite || false
+  const notes = movieData?.note || "" 
+  const rating = movieData?.rating || 0
 
   const buttonVariants = [
     {
@@ -43,11 +59,37 @@ export default function CardFilm({ film }: FilmProps) {
     },
     {
       id: 3,
-      icon: <StickyNote />,
-      text: 'Add Notes',
-      variant: 'outline',
+      icon: <StickyNote className={notes ? 'fill-yellow-100' : ''} />,
+      text: notes ? 'Ver Notas' : 'Add Notes',
+      variant: notes ? 'default' : 'outline',
     },
   ]
+
+  const handleNoteSubmit = () => {
+    dispatch(
+      updateMovie({
+        id: film.id,
+        note: noteText,
+      })
+    )
+    setIsNoteDialogOpen(false)
+    toast.success('Nota adicionada com sucesso!')
+  }
+
+  const openNoteDialog = () => {
+    setNoteText(notes || '')
+    setIsNoteDialogOpen(true)
+  }
+
+  const handleRatingChange = (newRating: number) => {
+    dispatch(
+      updateMovie({
+        id: film.id,
+        rating: newRating,
+      })
+    )
+    toast.success(`Avaliação definida: ${newRating}/5 estrelas`)
+  }
 
   const addNewMovieProp = (id: number) => {
     switch (id) {
@@ -76,68 +118,125 @@ export default function CardFilm({ film }: FilmProps) {
         break
       }
       case 3: {
-        // Adicionar funcionalidade de notas
-        toast.info('Note feature coming soon')
+        openNoteDialog()
         break
       }
     }
   }
 
   return (
-    <Card className='w-80 rounded-2xl'>
-      <img src={film.image} alt='' className='rounded-t-2xl' />
-      <CardHeader>
-        <CardTitle>{film.title}</CardTitle>
-        <p>
-          <span>{film.release_date}</span> •{' '}
-          <span>
-            {format(
-              addMinutes(
-                new Date().setHours(0, 0, 0, 0),
-                Number(film.running_time)
-              ),
-              "H'h' mm'min'"
-            )}
-          </span>
-        </p>
-        <div className='flex justify-between'>
-          <div className='flex gap-2'>
-            <Star className='fill-yellow-400 text-yellow-400' />
-            <span> {film.rt_score}%</span>
+    <>
+      <Card className='w-80 rounded-2xl'>
+        <img src={film.image} alt='' className='rounded-t-2xl' />
+        <CardHeader>
+          <CardTitle>{film.title}</CardTitle>
+          <p>
+            <span>{film.release_date}</span> •{' '}
+            <span>
+              {format(
+                addMinutes(
+                  new Date().setHours(0, 0, 0, 0),
+                  Number(film.running_time)
+                ),
+                "H'h' mm'min'"
+              )}
+            </span>
+          </p>
+          <div className='flex justify-between'>
+            <div className='flex gap-2'>
+              <Star className='fill-yellow-400 text-yellow-400' />
+              <span> {film.rt_score}%</span>
+            </div>
+            <div className='flex items-center'>
+              <div className='flex'>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star
+                    key={star}
+                    className={`cursor-pointer transition-colors ${
+                      (hoverRating > 0 ? hoverRating >= star : rating >= star)
+                        ? 'fill-yellow-400 text-yellow-400'
+                        : 'text-gray-300'
+                    }`}
+                    size={18}
+                    onClick={() => handleRatingChange(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                  />
+                ))}
+              </div>
+              <span className='ml-2 text-sm'>
+                {rating > 0 ? `${rating}/5` : 'Not rated'}
+              </span>
+            </div>
           </div>
-          <span>Not rated</span>
-        </div>
 
-        <CardDescription className='max-h-56 truncate text-nowrap'>
-          {film.description}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p>Director: {film.director}</p>
-        <p>Producer: {film.producer}</p>
-      </CardContent>
-      <CardFooter className='flex flex-col gap-2'>
-        {buttonVariants.map((variant, index) => (
-          <Button
-            key={index}
-            className='my-auto flex w-full cursor-pointer gap-2 border-2'
-            variant={
-              variant.variant as
-                | 'default'
-                | 'destructive'
-                | 'outline'
-                | 'secondary'
-                | 'ghost'
-                | 'link'
-                | null
-                | undefined
-            }
-            onClick={() => addNewMovieProp(variant.id)}
-          >
-            {variant.icon} {variant.text}
-          </Button>
-        ))}
-      </CardFooter>
-    </Card>
+          <CardDescription className='max-h-56 truncate text-nowrap'>
+            {film.description}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p>Director: {film.director}</p>
+          <p>Producer: {film.producer}</p>
+        </CardContent>
+        <CardFooter className='flex flex-col gap-2'>
+          {buttonVariants.map((variant, index) => (
+            <Button
+              key={index}
+              className='my-auto flex w-full cursor-pointer gap-2 border-2'
+              variant={
+                variant.variant as
+                  | 'default'
+                  | 'destructive'
+                  | 'outline'
+                  | 'secondary'
+                  | 'ghost'
+                  | 'link'
+                  | null
+                  | undefined
+              }
+              onClick={() => addNewMovieProp(variant.id)}
+            >
+              {variant.icon} {variant.text}
+            </Button>
+          ))}
+        </CardFooter>
+      </Card>
+
+      <Dialog open={isNoteDialogOpen} onOpenChange={setIsNoteDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Adicionar Nota</DialogTitle>
+            <DialogDescription>
+              Adicione suas anotações sobre "{film.title}"
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="note" className="text-right">
+                Nota
+              </Label>
+              <Input
+                id="note"
+                value={noteText}
+                onChange={(e) => setNoteText(e.target.value)}
+                className="col-span-3"
+                placeholder="Escreva sua nota aqui..."
+              />
+            </div>
+            {notes && (
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label className="text-right">Nota Atual</Label>
+                <div className="col-span-3 rounded-md border p-2">{notes}</div>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button type="submit" onClick={handleNoteSubmit}>
+              Salvar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }

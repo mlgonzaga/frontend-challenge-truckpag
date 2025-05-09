@@ -19,4 +19,5 @@ export interface MoviesResponse {
   watched?: boolean
   favorite?: boolean
   note?: string
+  rating?: number
 }
