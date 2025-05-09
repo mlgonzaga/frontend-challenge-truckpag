@@ -119,7 +119,7 @@ export default function CardsSection() {
   }
 
   return (
-    <div className='flex w-full flex-col bg-slate-900 sm:px-8 md:px-12 lg:px-24 xl:px-56 py-8'>
+    <div className='flex w-full flex-col bg-slate-900 sm:px-8 md:px-12 lg:px-24  py-8'>
       <div className='relative'>
         <Input
           placeholder='Search movies...'
@@ -222,7 +222,7 @@ export default function CardsSection() {
         </Select>
       </div>
       <div
-        className={`mx-auto xl:m-5 mt-6 grid gap-4 sm:gap-6 md:gap-6 lg:gap-8 grid-cols-1 ${
+        className={`m-auto  mt-6 grid gap-4 sm:gap-6 md:gap-6 lg:gap-8 grid-cols-1 ${
           isLoading || filteredAndSortedFilms.length > 1
             ? 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4'
             : ''
