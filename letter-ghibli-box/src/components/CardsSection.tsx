@@ -2,23 +2,28 @@ import { useGetAllMoviesQuery } from '@/store/services/list-movies-service'
 import type { MoviesResponse } from '@/interfaces/movies'
 import CardFilm from './CardFilm'
 import { Input } from './ui/input'
-import { Search, Loader2 } from 'lucide-react'
+import { Search, Loader2, Eye, Heart, StickyNote, Star, ChevronDown } from 'lucide-react'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Label } from './ui/label'
 import { useState, useMemo } from 'react'
 import { useAppSelector } from '@/store'
+import { Button } from './ui/button'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 
 export default function CardsSection() {
   const [searchTerm, setSearchTerm] = useState('')
   const [includeSynopsis, setIncludeSynopsis] = useState(false)
   const [sortOption, setSortOption] = useState('default')
+  const [showWatched, setShowWatched] = useState(false)
+  const [showFavorites, setShowFavorites] = useState(false)
+  const [showWithNotes, setShowWithNotes] = useState(false)
+  const [ratingFilter, setRatingFilter] = useState('all')
 
   const movieRatings = useAppSelector((state) => state.movies.movieData)
 
@@ -45,6 +50,23 @@ export default function CardsSection() {
         .includes(searchTerm.toLowerCase())
 
       return titleMatch || synopsisMatch
+    })
+
+    // Aplica filtros adicionais
+    filteredFilms = filteredFilms.filter((film: MoviesResponse) => {
+      const movieData = movieRatings[film.id]
+
+      if (showWatched && !movieData?.watched) return false
+      if (showFavorites && !movieData?.favorite) return false
+      if (showWithNotes && !movieData?.note) return false
+
+      if (ratingFilter !== 'all') {
+        const rating = movieData?.rating || 0
+        if (ratingFilter === 'unrated' && rating !== 0) return false
+        if (ratingFilter !== 'unrated' && rating !== parseInt(ratingFilter)) return false
+      }
+
+      return true
     })
 
     // Depois ordena os filmes filtrados
@@ -74,10 +96,10 @@ export default function CardsSection() {
           return 0
       }
     })
-  }, [getAllFilms, searchTerm, includeSynopsis, sortOption, movieRatings])
+  }, [getAllFilms, searchTerm, includeSynopsis, sortOption, movieRatings, showWatched, showFavorites, showWithNotes, ratingFilter])
 
   return (
-    <div className='flex w-full flex-col bg-slate-900 sm:px-8 md:px-12 lg:px-24  py-8'>
+    <div className='flex w-full flex-col bg-slate-900 sm:px-8 md:px-12 lg:px-24 py-8'>
       <div className='relative'>
         <Input
           placeholder='Search movies...'
@@ -126,65 +148,166 @@ export default function CardsSection() {
               className='text-white hover:bg-zinc-700'
               value='default'
             >
-              Padrão
+              Default
             </SelectItem>
             <SelectItem
               className='text-white hover:bg-zinc-700'
               value='title-asc'
             >
-              Título (A-Z)
+              Title (A-Z)
             </SelectItem>
             <SelectItem
               className='text-white hover:bg-zinc-700'
               value='title-desc'
             >
-              Título (Z-A)
+              Title (Z-A)
             </SelectItem>
             <SelectItem
               className='text-white hover:bg-zinc-700'
               value='duration-shortest'
             >
-              Duração (Mais curta)
+              Duration (Shortest)
             </SelectItem>
             <SelectItem
               className='text-white hover:bg-zinc-700'
               value='duration-longest'
             >
-              Duração (Mais longa)
+              Duration (Longest)
             </SelectItem>
             <SelectItem
               className='text-white hover:bg-zinc-700'
               value='rating-highest'
             >
-              Sua Avaliação (Maior)
+              Your Rating (Highest)
             </SelectItem>
             <SelectItem
               className='text-white hover:bg-zinc-700'
               value='rating-lowest'
             >
-              Sua Avaliação (Menor)
+              Your Rating (Lowest)
             </SelectItem>
             <SelectItem
               className='text-white hover:bg-zinc-700'
               value='score-highest'
             >
-              Pontuação (Maior)
+              Score (Highest)
             </SelectItem>
             <SelectItem
               className='text-white hover:bg-zinc-700'
               value='score-lowest'
             >
-              Pontuação (Menor)
+              Score (Lowest)
             </SelectItem>
           </SelectContent>
         </Select>
       </div>
+
+      <div className="mt-6 flex flex-wrap gap-4 items-center">
+        <div className="flex gap-2">
+          <p className='text-white'>Filters:</p>
+          <Button
+            variant={showWatched ? "default" : "outline"}
+            onClick={() => setShowWatched(!showWatched)}
+            className="text-black cursor-pointer"
+          >
+            <Eye className="mr-2 h-4 w-4" />
+            Watched
+          </Button>
+          <Button
+            variant={showFavorites ? "default" : "outline"}
+            onClick={() => setShowFavorites(!showFavorites)}
+            className="text-black cursor-pointer"
+          >
+            <Heart className="mr-2 h-4 w-4" />
+            Favorites
+          </Button>
+          <Button
+            variant={showWithNotes ? "default" : "outline"}
+            onClick={() => setShowWithNotes(!showWithNotes)}
+            className="text-black cursor-pointer"
+          >
+            <StickyNote className="mr-2 h-4 w-4" />
+            With Notes
+          </Button>
+        </div>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="text-black">
+              {ratingFilter === 'all' ? 'Any Rating' :
+                ratingFilter === 'unrated' ? 'Unrated' :
+                  `${ratingFilter} Stars`}
+              <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="bg-slate-400 text-black">
+            <DropdownMenuItem
+              onClick={() => setRatingFilter('all')}
+              className="text-white hover:bg-zinc-700"
+            >
+              All Movies
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setRatingFilter('all')}
+              className="text-white hover:bg-zinc-700"
+            >
+              Any Rating
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setRatingFilter('unrated')}
+              className="text-white hover:bg-zinc-700"
+            >
+              Unrated
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setRatingFilter('5')}
+              className="text-white hover:bg-zinc-700"
+            >
+              5 Stars {Array(5).fill(0).map((_, index) => (
+                <Star key={index} className="w-3 h-3 ml-1 text-yellow-400 fill-yellow-400" />
+              ))}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setRatingFilter('4')}
+              className="text-white hover:bg-zinc-700"
+            >
+              4 Stars {Array(4).fill(0).map((_, index) => (
+                <Star key={index} className="w-3 h-3 ml-1 text-yellow-400 fill-yellow-400" />
+              ))}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setRatingFilter('3')}
+              className="text-white hover:bg-zinc-700"
+            >
+              3 Stars {Array(3).fill(0).map((_, index) => (
+                <Star key={index} className="w-3 h-3 ml-1 text-yellow-400 fill-yellow-400" />
+              ))}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setRatingFilter('2')}
+              className="text-white hover:bg-zinc-700"
+            >
+              2 Stars {Array(2).fill(0).map((_, index) => (
+                <Star key={index} className="w-3 h-3 ml-1 text-yellow-400 fill-yellow-400" />
+              ))}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setRatingFilter('1')}
+              className="text-white hover:bg-zinc-700"
+            >
+              1 Star {Array(1).fill(0).map((_, index) => (
+                <Star key={index} className="w-3 h-3 ml-1 text-yellow-400 fill-yellow-400" />
+              ))}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
       <div
-        className={`m-auto mt-6 grid gap-4 sm:gap-6 md:gap-6 lg:gap-8 grid-cols-1 ${
-          filteredAndSortedFilms.length > 1
-            ? 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
-            : ''
-        }`}
+        className={`m-auto mt-6 grid gap-4 sm:gap-6 md:gap-6 lg:gap-8 grid-cols-1 ${filteredAndSortedFilms.length > 1
+          ? 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
+          : ''
+          }`}
       >
         {isLoading ? (
           <div className="col-span-full flex justify-center items-center min-h-[calc(100vh-200px)]">
