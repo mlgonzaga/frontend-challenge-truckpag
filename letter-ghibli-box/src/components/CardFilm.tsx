@@ -61,7 +61,7 @@ export default function CardFilm({ film }: FilmProps) {
     {
       id: 3,
       icon: <StickyNote className={notes ? 'fill-yellow-100' : ''} />,
-      text: notes ? 'Ver Notas' : 'Add Notes',
+      text: notes ? 'See Notes' : 'Add Notes',
       variant: notes ? 'default' : 'outline',
     },
   ]
