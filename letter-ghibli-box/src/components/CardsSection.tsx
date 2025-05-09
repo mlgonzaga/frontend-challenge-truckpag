@@ -120,11 +120,11 @@ export default function CardsSection() {
   }
 
   return (
-    <div className='flex w-full flex-col py-8 px-40 '>
+    <div className='flex w-full flex-col py-8 px-56 bg-slate-900'>
       <div className="relative">
         <Input 
-          placeholder='Buscar filmes...' 
-          className='border-2 pl-10'
+          placeholder='Search movies...' 
+          className='border-2 pl-10 bg-white'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           disabled={isLoading}
@@ -143,26 +143,26 @@ export default function CardsSection() {
             onCheckedChange={(checked) => setIncludeSynopsis(checked === true)}
             disabled={isLoading}
           />
-          <Label htmlFor="includeSynopsis" className={isLoading ? 'opacity-70' : ''}>
-            Incluir sinopse na busca
+          <Label htmlFor="includeSynopsis" className={isLoading ? 'opacity-70' : ' text-white font-normal'}>
+          Include synopsis in search
           </Label>
         </div>
         <Select value={sortOption} onValueChange={setSortOption} disabled={isLoading}>
-          <SelectTrigger className='w-[240px]'>
-            <SelectValue placeholder='Ordenar por (Padrão)' />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value='default'>Padrão</SelectItem>
-            <SelectItem value='title-asc'>Título (A-Z)</SelectItem>
-            <SelectItem value='title-desc'>Título (Z-A)</SelectItem>
-            <SelectItem value='duration-shortest'>Duração (Mais curta)</SelectItem>
-            <SelectItem value='duration-longest'>Duração (Mais longa)</SelectItem>
-            <SelectItem value='rating-highest'>Sua Avaliação (Maior)</SelectItem>
-            <SelectItem value='rating-lowest'>Sua Avaliação (Menor)</SelectItem>
-            <SelectItem value='score-highest'>Pontuação (Maior)</SelectItem>
-            <SelectItem value='score-lowest'>Pontuação (Menor)</SelectItem>
-          </SelectContent>
-        </Select>
+  <SelectTrigger className="w-[240px] bg-white text-shadow-zinc-400">
+    <SelectValue placeholder="Default" />
+  </SelectTrigger>
+  <SelectContent className="bg-slate-400 text-white">
+    <SelectItem className="hover:bg-zinc-700 text-white" value="default">Padrão</SelectItem>
+    <SelectItem className="hover:bg-zinc-700 text-white" value="title-asc">Título (A-Z)</SelectItem>
+    <SelectItem className="hover:bg-zinc-700 text-white" value="title-desc">Título (Z-A)</SelectItem>
+    <SelectItem className="hover:bg-zinc-700 text-white" value="duration-shortest">Duração (Mais curta)</SelectItem>
+    <SelectItem className="hover:bg-zinc-700 text-white" value="duration-longest">Duração (Mais longa)</SelectItem>
+    <SelectItem className="hover:bg-zinc-700 text-white" value="rating-highest">Sua Avaliação (Maior)</SelectItem>
+    <SelectItem className="hover:bg-zinc-700 text-white" value="rating-lowest">Sua Avaliação (Menor)</SelectItem>
+    <SelectItem className="hover:bg-zinc-700 text-white" value="score-highest">Pontuação (Maior)</SelectItem>
+    <SelectItem className="hover:bg-zinc-700 text-white" value="score-lowest">Pontuação (Menor)</SelectItem>
+  </SelectContent>
+</Select>
       </div>
       <div
         className={`m-auto mt-6 grid gap-8 ${

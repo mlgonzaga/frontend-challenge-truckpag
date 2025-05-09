@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Button } from './ui/button'
-import { Eye, Heart, Star, StickyNote } from 'lucide-react'
+import { Eye, Heart, Star, StickyNote, ChevronDown, ChevronUp } from 'lucide-react'
 import { addMinutes, format } from 'date-fns'
 import { useDispatch } from 'react-redux'
 import { updateMovie } from '@/store/slices/movieSlice'
@@ -35,8 +35,9 @@ export default function CardFilm({ film }: FilmProps) {
   const [noteText, setNoteText] = useState('')
   const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false)
   const [hoverRating, setHoverRating] = useState(0)
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
-  // Buscar os dados do filme do estado global
+
   const movieData = useAppSelector((state) => state.movies.movieData[film.id])
 
   const isWatched = movieData?.watched || false
@@ -170,9 +171,23 @@ export default function CardFilm({ film }: FilmProps) {
             </div>
           </div>
 
-          <CardDescription className='max-h-56 truncate text-nowrap'>
-            {film.description}
-          </CardDescription>
+          <div>
+            <CardDescription className={`${isDescriptionExpanded ? '' : 'max-h-12 overflow-hidden'} transition-all duration-300`}>
+              {film.description}
+            </CardDescription>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="mt-1 p-0 h-auto text-xs flex items-center" 
+              onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+            >
+              {isDescriptionExpanded ? (
+                <>Mostrar menos <ChevronUp className="ml-1 h-3 w-3" /></>
+              ) : (
+                <>Ler mais <ChevronDown className="ml-1 h-3 w-3" /></>
+              )}
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <p>Director: {film.director}</p>
