@@ -99,7 +99,7 @@ export default function CardsSection() {
   }, [getAllFilms, searchTerm, includeSynopsis, sortOption, movieRatings, showWatched, showFavorites, showWithNotes, ratingFilter])
 
   return (
-    <div className='flex w-full flex-col bg-slate-900 sm:px-8 md:px-12 lg:px-24 py-8'>
+    <div className='flex w-full flex-col bg-slate-900 sm:px-8 md:px-12 lg:px-24 py-8 px-2'>
       <div className='relative'>
         <Input
           placeholder='Search movies...'
@@ -202,9 +202,9 @@ export default function CardsSection() {
         </Select>
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-4 items-center">
-        <div className="flex gap-2">
-          <p className='text-white'>Filters:</p>
+      <div className="mt-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center px-2">
+        <p className='text-white'>Filters: </p>
+        <div className="flex flex-wrap gap-2">
           <Button
             variant={showWatched ? "destructive" : "outline"}
             onClick={() => setShowWatched(!showWatched)}
