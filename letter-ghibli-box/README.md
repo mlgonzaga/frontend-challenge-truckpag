@@ -1,54 +1,113 @@
-# React + TypeScript + Vite
+# Letter Ghibli Box
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application for managing and exploring Studio Ghibli movies. Built with React and TypeScript, this application allows users to browse, filter, and organize their favorite Ghibli films.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Browse Studio Ghibli movies with detailed information
+- Search functionality (by title and synopsis)
+- Multiple sorting options:
+  - Title (A-Z, Z-A)
+  - Duration (Shortest to Longest)
+  - Rating (Highest to Lowest)
+  - Score (Highest to Lowest)
+- Advanced filtering system:
+  - Watched movies
+  - Favorites
+  - Movies with notes
+  - Rating filters (1-5 stars)
+- Personal movie management:
+  - Mark movies as watched
+  - Add to favorites
+  - Add personal notes
+  - Rate movies (1-5 stars)
+- Responsive design for all screen sizes
 
-## Expanding the ESLint configuration
+## 🛠️ Tools and Technologies
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend Framework:** React with TypeScript
+- **State Management:** Redux Toolkit
+- **Styling:** Tailwind CSS
+- **UI Components:** Shadcn/ui
+- **Icons:** Lucide React
+- **Date Handling:** date-fns
+- **Notifications:** Sonner
+- **API Integration:** RTK Query
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 📋 Requirements
+
+### Implemented Requirements
+
+1. **Movie List Display**
+   - Grid layout with responsive design
+   - Movie cards with essential information
+   - Loading states and error handling
+
+2. **Search and Filtering**
+   - Real-time search functionality
+   - Multiple filter options
+   - Advanced sorting capabilities
+
+3. **User Interactions**
+   - Movie rating system
+   - Watch status tracking
+   - Favorites management
+   - Notes system
+
+4. **UI/UX**
+   - Modern and clean interface
+   - Responsive design
+   - Loading states
+   - User feedback (toasts)
+
+## 🚀 Installation and Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mlgonzaga/frontend-challenge-truckpag.git
+   cd letter-ghibli-box
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open your browser and navigate to:
+   ```
+   http://localhost:5173
+   ```
+
+## 🧪 Running Tests
+
+To run the test suite:
+
+```bash
+npm test
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+For test coverage:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run test:coverage
 ```
+
+## 📦 Project Structure
+
+```
+src/
+├── __tests__/      # Tests of some components
+├── components/     # React components
+├── interfaces/     # TypeScript interfaces
+├── store/         # Redux store configuration
+├── services/      # API services
+├── slices/        # Slice to manipulate localstorage
+└── utils/         # Utility functions
+```
+
+
