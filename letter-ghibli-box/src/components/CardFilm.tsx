@@ -127,7 +127,7 @@ export default function CardFilm({ film }: FilmProps) {
 
   return (
     <>
-      <Card className='w-full rounded-2xl'>
+      <Card className='min-w-[280px] sm:w-full w-full rounded-2xl'>
         <img src={film.image} alt='' className='rounded-t-2xl' />
         <CardHeader>
           <CardTitle>{film.title}</CardTitle>
