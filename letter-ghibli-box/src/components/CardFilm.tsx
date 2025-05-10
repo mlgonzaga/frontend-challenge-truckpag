@@ -127,7 +127,7 @@ export default function CardFilm({ film }: FilmProps) {
   return (
     <>
       <Card className='min-w-[280px] sm:w-full w-full rounded-2xl'>
-        <div className="relative">
+        <div className="relative group">
           <img src={film.image} alt='' className='rounded-t-2xl' />
           <div className="absolute top-2 right-2 flex gap-2">
             {isFavorite && (
@@ -145,6 +145,9 @@ export default function CardFilm({ film }: FilmProps) {
                 <StickyNote className="h-4 w-4 text-white" />
               </div>
             )}
+          </div>
+          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-2xl flex items-center justify-center">
+            <p className="text-white text-center px-4 font-medium">{film.original_title_romanised}</p>
           </div>
         </div>
         <CardHeader>
