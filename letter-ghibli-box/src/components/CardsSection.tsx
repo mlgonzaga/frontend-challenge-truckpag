@@ -234,7 +234,8 @@ export default function CardsSection() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className={ratingFilter === 'all' ? "cursor-pointer border-white hover:text-white hover:bg-white/10" : "text-black"}>
-              {ratingFilter === 'all' ? 'Any Rating' :
+              <Star className="mr-2 h-4 w-4" />
+              {ratingFilter === 'all' ? 'Rating' :
                 ratingFilter === 'unrated' ? 'Unrated' :
                   `${ratingFilter} Stars`}
               <ChevronDown className="ml-2 h-4 w-4" />
@@ -242,19 +243,25 @@ export default function CardsSection() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="bg-slate-400 text-black">
             <DropdownMenuItem
-              onClick={() => setRatingFilter('all')}
+              onClick={() => {
+                setRatingFilter('all');
+              }}
               className="text-white hover:bg-zinc-700"
             >
               All Movies
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => setRatingFilter('all')}
+              onClick={() => {
+                setRatingFilter('all');
+              }}
               className="text-white hover:bg-zinc-700"
             >
               Any Rating
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => setRatingFilter('unrated')}
+              onClick={() => {
+                setRatingFilter('unrated');
+              }}
               className="text-white hover:bg-zinc-700"
             >
               Unrated
