@@ -41,7 +41,7 @@ export default function CardFilm({ film }: FilmProps) {
 
   const isWatched = movieData?.watched || false
   const isFavorite = movieData?.favorite || false
-  const notes = movieData?.note || "" 
+  const notes = movieData?.note || ""
   const rating = movieData?.rating || 0
 
   const buttonVariants = [
@@ -127,7 +127,26 @@ export default function CardFilm({ film }: FilmProps) {
   return (
     <>
       <Card className='min-w-[280px] sm:w-full w-full rounded-2xl'>
-        <img src={film.image} alt='' className='rounded-t-2xl' />
+        <div className="relative">
+          <img src={film.image} alt='' className='rounded-t-2xl' />
+          <div className="absolute top-2 right-2 flex gap-2">
+            {isFavorite && (
+              <div className="bg-red-500 rounded-full p-1">
+                <Heart className="h-4 w-4 text-white" />
+              </div>
+            )}
+            {isWatched && (
+              <div className="bg-green-500 rounded-full p-1">
+                <Eye className="h-4 w-4 text-white" />
+              </div>
+            )}
+            {notes && (
+              <div className="bg-blue-500 rounded-full p-1">
+                <StickyNote className="h-4 w-4 text-white" />
+              </div>
+            )}
+          </div>
+        </div>
         <CardHeader>
           <CardTitle>{film.title}</CardTitle>
           <p>
@@ -152,11 +171,10 @@ export default function CardFilm({ film }: FilmProps) {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
-                    className={`cursor-pointer transition-colors ${
-                      (hoverRating > 0 ? hoverRating >= star : rating >= star)
+                    className={`cursor-pointer transition-colors ${(hoverRating > 0 ? hoverRating >= star : rating >= star)
                         ? 'fill-yellow-400 text-yellow-400'
                         : 'text-gray-300'
-                    }`}
+                      }`}
                     size={18}
                     onClick={() => handleRatingChange(star)}
                     onMouseEnter={() => setHoverRating(star)}
@@ -174,10 +192,10 @@ export default function CardFilm({ film }: FilmProps) {
             <CardDescription className={`${isDescriptionExpanded ? '' : 'max-h-12 overflow-hidden'} transition-all duration-300`}>
               {film.description}
             </CardDescription>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="mt-1 p-0 h-auto text-xs flex items-center" 
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mt-1 p-0 h-auto text-xs flex items-center"
               onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
             >
               {isDescriptionExpanded ? (
@@ -199,14 +217,14 @@ export default function CardFilm({ film }: FilmProps) {
               className='my-auto flex w-full cursor-pointer gap-2 border-2'
               variant={
                 variant.variant as
-                  | 'default'
-                  | 'destructive'
-                  | 'outline'
-                  | 'secondary'
-                  | 'ghost'
-                  | 'link'
-                  | null
-                  | undefined
+                | 'default'
+                | 'destructive'
+                | 'outline'
+                | 'secondary'
+                | 'ghost'
+                | 'link'
+                | null
+                | undefined
               }
               onClick={() => addNewMovieProp(variant.id)}
             >
