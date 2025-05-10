@@ -69,29 +69,56 @@ export default function CardsSection() {
       return true
     })
 
-    // Depois ordena os filmes filtrados
+    // Funções de ordenação
+    const sortByTitle = (a: MoviesResponse, b: MoviesResponse, ascending: boolean) => {
+      return ascending
+        ? a.title.localeCompare(b.title)
+        : b.title.localeCompare(a.title)
+    }
+
+    const sortByDuration = (a: MoviesResponse, b: MoviesResponse, shortest: boolean) => {
+      const durationA = parseInt(a.running_time)
+      const durationB = parseInt(b.running_time)
+      return shortest
+        ? durationA - durationB
+        : durationB - durationA
+    }
+
+    const sortByRating = (a: MoviesResponse, b: MoviesResponse, highest: boolean) => {
+      const ratingA = movieRatings[a.id]?.rating || 0
+      const ratingB = movieRatings[b.id]?.rating || 0
+      return highest
+        ? ratingB - ratingA
+        : ratingA - ratingB
+    }
+
+    const sortByScore = (a: MoviesResponse, b: MoviesResponse, highest: boolean) => {
+      const scoreA = parseInt(a.rt_score)
+      const scoreB = parseInt(b.rt_score)
+      return highest
+        ? scoreB - scoreA
+        : scoreA - scoreB
+    }
+
+    // Aplica a ordenação
     return filteredFilms.sort((a: MoviesResponse, b: MoviesResponse) => {
       switch (sortOption) {
         case 'title-asc':
-          return a.title.localeCompare(b.title)
+          return sortByTitle(a, b, true)
         case 'title-desc':
-          return b.title.localeCompare(a.title)
+          return sortByTitle(a, b, false)
         case 'duration-shortest':
-          return parseInt(a.running_time) - parseInt(b.running_time)
+          return sortByDuration(a, b, true)
         case 'duration-longest':
-          return parseInt(b.running_time) - parseInt(a.running_time)
+          return sortByDuration(a, b, false)
         case 'rating-highest':
-          const ratingA = movieRatings[a.id]?.rating || 0
-          const ratingB = movieRatings[b.id]?.rating || 0
-          return ratingB - ratingA
+          return sortByRating(a, b, true)
         case 'rating-lowest':
-          const ratingALow = movieRatings[a.id]?.rating || 0
-          const ratingBLow = movieRatings[b.id]?.rating || 0
-          return ratingALow - ratingBLow
+          return sortByRating(a, b, false)
         case 'score-highest':
-          return parseInt(b.rt_score) - parseInt(a.rt_score)
+          return sortByScore(a, b, true)
         case 'score-lowest':
-          return parseInt(a.rt_score) - parseInt(b.rt_score)
+          return sortByScore(a, b, false)
         default:
           return 0
       }
