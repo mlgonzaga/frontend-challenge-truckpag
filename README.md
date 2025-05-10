@@ -1,80 +1,111 @@
-## 🎯 **Objetivo do Desafio**
+# Letter Ghibli Box
 
-Avaliar sua habilidade de desenvolver uma aplicação com **React**, utilizando **JavaScript** (ou **TypeScript**, se desejar), consumindo uma **API pública real** e aplicando boas práticas de estruturação de componentes, manipulação de estado e interações com o usuário.
+Uma aplicação web moderna para gerenciar e explorar filmes do Studio Ghibli com layout inspirado no site https://letterboxd.com/. Construída com React e TypeScript, esta aplicação permite que os usuários naveguem, filtrem e organizem seus filmes favoritos dos estudios Ghibli.
 
-## 📜 **Descrição**
+Pode ser acessado através do link: https://frontend-challenge-truckpag.vercel.app/
 
-Você deverá desenvolver uma aplicação que consome a API pública do [Studio Ghibli](https://ghibliapi.vercel.app/#tag/Films) e exibe uma lista de filmes do estúdio com suas respectivas informações e algumas opções de filtro/ações nessa lista, conforme especificado a seguir:
+## 🚀 Funcionalidades
 
-> ⚠️ O desafio deve ser implementado utilizando a versão mais recente do React com **javascript** ou **typescript.** Busque desenvolver uma interface agradável e legível (não precisa ser um design incrível, mas bem organizada)
+- Navegue pelos filmes do Studio Ghibli com informações detalhadas
+- Funcionalidade de busca (por título e sinopse)
+- Múltiplas opções de ordenação:
+  - Título (A-Z, Z-A)
+  - Duração (Mais curto para mais longo)
+  - Avaliação (Maior para menor)
+  - Pontuação (Maior para menor)
+- Sistema avançado de filtros:
+  - Filmes assistidos
+  - Favoritos
+  - Filmes com notas
+  - Filtros por avaliação (1-5 estrelas)
+- Gerenciamento pessoal de filmes:
+  - Marcar filmes como assistidos
+  - Adicionar aos favoritos
+  - Adicionar notas pessoais
+  - Avaliar filmes (1-5 estrelas)
+- Design responsivo para todos os tamanhos de tela
+
+## 🛠️ Ferramentas e Tecnologias
+
+- **Framework Frontend:** React com TypeScript
+- **Gerenciamento de Estado:** Redux Toolkit
+- **Estilização:** Tailwind CSS
+- **Componentes UI:** Shadcn/ui
+- **Ícones:** Lucide React
+- **Manipulação de Datas:** date-fns
+- **Notificações:** Sonner
+- **Integração com API:** RTK Query
+
+## 📋 Requisitos
+
+### Requisitos Implementados
+
+1. **Exibição da Lista de Filmes**
+   - Layout em grade com design responsivo
+   - Cards de filmes com informações essenciais
+   - Estados de carregamento e tratamento de erros
+
+2. **Busca e Filtragem**
+   - Funcionalidade de busca em tempo real
+   - Múltiplas opções de filtro
+   - Capacidades avançadas de ordenação
+
+3. **Interações do Usuário**
+   - Sistema de avaliação de filmes
+   - Acompanhamento de status de visualização
+   - Gerenciamento de favoritos
+   - Sistema de notas
+
+4. **UI/UX**
+   - Interface moderna e limpa
+   - Design responsivo
+   - Estados de carregamento
+   - Feedback ao usuário (toasts)
+
+## 🚀 Instalação e Configuração
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/mlgonzaga/frontend-challenge-truckpag.git
+   cd letter-ghibli-box
+   ```
+
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+
+3. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
+
+4. Abra seu navegador e acesse:
+   ```
+   http://localhost:5173
+   ```
+
+## 🧪 Executando Testes
+
+Para executar a suite de testes:
+
+```bash
+npm test
+```
 
 
-## 🔎 **Requisitos Funcionais**
 
-### ✅ Obrigatórios
+## 📦 Estrutura do Projeto
 
-- [ ]  Listar filmes com as seguintes informações
-    - Imagem do filme
-    - Título
-    - Ano de lançamento
-    - Duração
-    - Sinopse
-    - Diretor e Produtor
-    - Nota de avaliação (campo `rt_score`)
-- [ ]  Marcar o filme como assistido
-- [ ]  Marcar o filme como favorito
-- [ ]  Filtrar os filmes por título através de um campo de texto
-- [ ]  Buscar palavras do filtro de texto na sinopse do filme
-    - Ao selecionar a opção “Incluir sinopse na busca**”,** além de filtrar os filmes, também deve destacar o texto buscado na sinopse com alguma cor.
-- [ ]  Adicionar anotações de texto a um filme
-- [ ]  Adicionar, junto à anotação, uma avaliação pessoal de 1 a 5 estrelas
-- [ ]  Filtrar os filmes por:
-    - Assistido
-    - Favorito
-    - Com anotação.
-    - Número de estrelas
-- [ ]  Ordenar filmes (de forma crescente e decrescente) por:
-    - Título
-    - Duração
-    - Avaliação pessoal
-    - Nota de avaliação (campo `rt_score`)
+```
+src/
+├── __tests__/      # Testes de alguns componentes
+├── components/     # Componentes React
+├── interfaces/     # Interfaces TypeScript
+├── store/         # Configuração do Redux store
+├── services/      # Serviços de API
+├── slices/        # Slice para manipular localStorage
+└── utils/         # Funções utilitárias
+```
 
-### ✨ Desejáveis
 
-- [ ]  Utilizar **TypeScript**
-- [ ]  Implementar responsividade básica
-- [ ]  Salvar
-- [ ]  Adicionar mensagens toast para as operações
-    - Marcar/desmarcar o filme como assistido, favorito;
-    - Adicionar/editar/remover anotação;
-- [ ]  Escrever pelo menos 1 **teste unitário** (ex: botão de favorito ou função de marcação)
-- [ ]  Separação clara de responsabilidades (componentes, serviços de API, etc.)
-- [ ]  Utilizar biblioteca de estilo (Styled-components, Tailwind, Shadcn-ui, etc.)
-- [ ]  Utilizar Context API ou uma solução de estado global (Redux, zustand, etc.)
-- [ ]  Utilizar solução para gerenciar estado assíncrono (axios, tanstack query, etc.)
-
-## 💻 Sugestão de interface
-
-Segue o deploy abaixo com uma sugestão de interface para a implementação do desafio. Mas claro, sinta-se à vontade para imprimir seu estilo próprio durante a implementação:
-[Versão online](https://v0-ghibli-movie-app.vercel.app/)
-* * *
-
-📦 **Entrega**
---------------
-
-1.  Inclua um `README.md` com:
-    
-    *   Instruções de instalação e execução.
-        
-    *   Ferramentas utilizadas.
-        
-    *   Quais requisitos foram implementados.
-        
-    *   Se aplicável, como rodar os testes.
-        
-
-* * *
-
-* * *
-
-💡 **Nota**: O foco está na organização, clareza e qualidade do código — não necessariamente na completude ou complexidade. Explique suas decisões, use commits claros, e divirta-se com o desafio!
