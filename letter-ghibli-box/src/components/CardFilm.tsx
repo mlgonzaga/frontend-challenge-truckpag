@@ -172,8 +172,8 @@ export default function CardFilm({ film }: FilmProps) {
                   <Star
                     key={star}
                     className={`cursor-pointer transition-colors ${(hoverRating > 0 ? hoverRating >= star : rating >= star)
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-gray-300'
+                      ? 'fill-yellow-400 text-yellow-400'
+                      : 'text-gray-300'
                       }`}
                     size={18}
                     onClick={() => handleRatingChange(star)}
@@ -209,6 +209,12 @@ export default function CardFilm({ film }: FilmProps) {
         <CardContent>
           <p>Director: {film.director}</p>
           <p>Producer: {film.producer}</p>
+          {notes && (
+            <div className="mt-2 bg-blue-100/50 p-2 rounded-md">
+              <p className="font-semibold text-blue-600">Your Note:</p>
+              <p className="text-sm text-blue-600">{notes}</p>
+            </div>
+          )}
         </CardContent>
         <CardFooter className='flex flex-col gap-2'>
           {buttonVariants.map((variant, index) => (
